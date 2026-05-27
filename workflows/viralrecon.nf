@@ -1061,7 +1061,7 @@ workflow VIRALRECON {
             PLOT_MOSDEPTH_REGIONS_AMPLICON (
                 MOSDEPTH_AMPLICON.out.regions_bed.collect { it[1] }
             )
-            ch_multiqc_files = ch_multiqc_files.mix(PLOT_MOSDEPTH_REGIONS_AMPLICON.out.heatmap_tsv.collect{it[1]}.ifEmpty([]))
+            ch_multiqc_files = ch_multiqc_files.mix(PLOT_MOSDEPTH_REGIONS_AMPLICON.out.heatmap_tsv.collect().ifEmpty([]))
             ch_versions      = ch_versions.mix(PLOT_MOSDEPTH_REGIONS_AMPLICON.out.versions)
         }
 
