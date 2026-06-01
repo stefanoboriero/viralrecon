@@ -8,6 +8,7 @@ workflow BAM_VARIANT_DEMIX_BOOT_FREYJA {
     take:
     ch_bam               // channel: [ val(meta), path(bam) ]
     ch_fasta             // channel: [ path(fasta) ]
+    ch_fai               // channel: [ path(fai) ]
     val_skip_boot        // value skip_boot
     val_repeats          // value repeats
     val_db_name          // string db_name
@@ -21,7 +22,8 @@ workflow BAM_VARIANT_DEMIX_BOOT_FREYJA {
     //
     FREYJA_VARIANTS (
         ch_bam,
-        ch_fasta
+        ch_fasta,
+        ch_fai
     )
     ch_freyja_variants = FREYJA_VARIANTS.out.variants
 
