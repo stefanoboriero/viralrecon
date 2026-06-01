@@ -512,6 +512,7 @@ workflow VIRALRECON {
             BAM_VARIANT_DEMIX_BOOT_FREYJA(
                 ch_bam,
                 PREPARE_GENOME.out.fasta,
+                PREPARE_GENOME.out.fai,
                 params.skip_freyja_boot,
                 params.freyja_repeats,
                 params.freyja_db_name,
@@ -1130,6 +1131,7 @@ workflow VIRALRECON {
             BAM_VARIANT_DEMIX_BOOT_FREYJA(
                 ch_filtered_bam_nanopore,
                 PREPARE_GENOME.out.fasta,
+                PREPARE_GENOME.out.fai,
                 params.skip_freyja_boot,
                 params.freyja_repeats,
                 params.freyja_db_name,
