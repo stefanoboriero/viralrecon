@@ -32,12 +32,14 @@ workflow BAM_VARIANT_DEMIX_BOOT_FREYJA {
     //
     // Update the database if none are given.
     //
+    ch_lineages_topology = []
     if (!ch_barcodes || !ch_lineages_meta) {
         FREYJA_UPDATE (
             val_db_name
         )
         ch_barcodes      = FREYJA_UPDATE.out.barcodes
         ch_lineages_meta = FREYJA_UPDATE.out.lineages_meta
+        ch_lineages_topology = FREYJA_UPDATE.out.lineages_topology
         ch_versions      = ch_versions.mix(FREYJA_UPDATE.out.versions.first())
     }
 
@@ -48,7 +50,8 @@ workflow BAM_VARIANT_DEMIX_BOOT_FREYJA {
     FREYJA_DEMIX (
         ch_freyja_variants,
         ch_barcodes,
-        ch_lineages_meta
+        ch_lineages_meta,
+        ch_lineages_topology
     )
     ch_freyja_demix = FREYJA_DEMIX.out.demix
     ch_versions     = ch_versions.mix(FREYJA_DEMIX.out.versions.first())
@@ -64,7 +67,8 @@ workflow BAM_VARIANT_DEMIX_BOOT_FREYJA {
             ch_freyja_variants,
             val_repeats,
             ch_barcodes,
-            ch_lineages_meta
+            ch_lineages_meta,
+            ch_lineages_topology
         )
         ch_lineages   = FREYJA_BOOT.out.lineages
         ch_summarized = FREYJA_BOOT.out.summarized

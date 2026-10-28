@@ -5,13 +5,14 @@ process FREYJA_DEMIX {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/freyja:2.0.1--pyhdfd78af_0' :
-        'biocontainers/freyja:2.0.1--pyhdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f0/f0b023f9c9e25f338d72ed6710e4d2a54a4c3a9a3ac34f17e08683894dc40830/data' :
+        'community.wave.seqera.io/library/freyja:2.0.6--be3cbd6f14f9d542' }"
 
     input:
     tuple val(meta), path(variants), path(depths)
     path barcodes
     path lineages_meta
+    path lineages_topology
 
     output:
     tuple val(meta), path("*.tsv"), emit: demix
@@ -23,6 +24,7 @@ process FREYJA_DEMIX {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def lineage_cmd = lineages_topology ? "--lineageyml $lineages_topology" : ''
     """
     freyja \\
         demix \\
@@ -30,6 +32,7 @@ process FREYJA_DEMIX {
         --output ${prefix}.tsv \\
         --barcodes $barcodes \\
         --meta $lineages_meta \\
+        $lineage_cmd \\
         $variants \\
         $depths
 
